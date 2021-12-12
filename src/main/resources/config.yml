@@ -1,0 +1,8 @@
+# password length
+min_password_length: 3
+max_password_length: 8
+
+# time to log in (time in ticks)
+auth_time: 400
+# kick the player if you enter the wrong password
+kick: true

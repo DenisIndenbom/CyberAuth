@@ -1,0 +1,80 @@
+package com.denisindenbom.cyberauth.commands;
+
+import org.bukkit.configuration.file.FileConfiguration;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+
+import org.bukkit.entity.Player;
+
+import com.denisindenbom.cyberauth.CyberAuth;
+import com.denisindenbom.cyberauth.formattext.FormatText;
+import com.denisindenbom.cyberauth.messagesender.MessageSender;
+
+import com.denisindenbom.cyberauth.user.User;
+
+import org.jetbrains.annotations.NotNull;
+
+public class Login implements CommandExecutor
+{
+    private final CyberAuth plugin;
+
+    private final MessageSender messageSender = new MessageSender();
+    private final FormatText formatText = new FormatText();
+
+    private final FileConfiguration messages;
+    private final boolean kick;
+
+
+    public Login(CyberAuth plugin, FileConfiguration messages, boolean kick)
+    {
+        this.plugin = plugin;
+        this.messages = messages;
+        this.kick = kick;
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label,
+                             String @NotNull [] args)
+    {
+        Player player = (Player) sender;
+
+        if (args.length == 0)
+        {
+            this.messageSender.sendMessage(sender, this.messages.getString("error.arguments"));
+            return false;
+        }
+        if (!this.plugin.getAuthDB().userIs(player.getName()))
+        {
+            this.messageSender.sendMessage(sender, this.messages.getString("error.not_registered"));
+            return true;
+        }
+        if (this.plugin.getAuthManager().userIs(player.getName()))
+        {
+            this.messageSender.sendMessage(sender, this.messages.getString("error.logged_in"));
+            return false;
+        }
+
+        User user = this.plugin.getAuthDB().getUser(player.getName());
+
+        char[] password = args[0].toCharArray();
+
+        boolean result = this.plugin.getPasswordAuth().authenticate(password, user.getPasswordHash());
+
+        if (result)
+        {
+            this.plugin.getAuthManager().addUser(user);
+            this.messageSender.sendMessage(sender, this.messages.getString("login.logged_in"));
+            this.messageSender.sendMessage(sender, this.messages.getString("welcome"), "{%user_name%}", user.getName());
+        }
+        else
+        {
+            String wrongPassword = this.messages.getString("error.wrong_password");
+
+            this.messageSender.sendMessage(sender, wrongPassword);
+            if (this.kick) player.kickPlayer(this.formatText.format(wrongPassword));
+        }
+        return true;
+    }
+}

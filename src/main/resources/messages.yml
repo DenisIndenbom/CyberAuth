@@ -1,0 +1,49 @@
+# {%user_name%} - the name of the user who joined
+# {%server_name%} - server name
+# {%min_password_length%} - min password length
+# {%min_password_length%} - max password length
+# <c > - specifying the color
+# <c0> - black
+# <c1> - dark blue
+# <c2> - dark green
+# <c3> - dark aqua
+# <c4> - dark red
+# <c5> - dark purple
+# <c6> - gold
+# <c7> - gray
+# <c8> - dark gray
+# <c9> - blue
+# <ca> - green
+# <cb> - aqua
+# <cc> - red
+# <cd> - light purple
+# <ce> - yellow
+# <cf> - white
+
+welcome: "Welcome, {%user_name%} to the server!"
+
+login:
+  logged_in: "<c2>Successful login!"
+  log_in: "<cc>Login, please! Usage: /login <password>"
+
+registration:
+  registered: "<c2>You are registered!"
+  register_in: "<cc>Register, please! Usage: /register <password> <repeat_password>"
+
+change_password:
+  changed: "<c2>Password changed successfully!"
+
+error:
+  logged_in: "<c4>You are already logged in!"
+  not_logged_in: "<c4>You are not logged in!"
+  registered: "<c4>You are already registered!"
+  not_registered: "<c4> You are not registered!"
+  arguments: "<c4>You forgot arguments!"
+  wrong_password: "<c4>Wrong password!"
+  change_password: "<c4>Failed to change password!"
+  set_password: "<c4>The password was entered incorrectly!"
+  short_password: "<c4>The password is short! The minimum password length is {%min_password_length%}"
+  long_password: "<c4>The password is too long! The maximum password length is {%max_password_length%}"
+  registration: "<c4>Error during registration!"
+  timeout: "<c4>Time out!"
+

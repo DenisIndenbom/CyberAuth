@@ -1,0 +1,24 @@
+name: CyberAuth
+version: 1.0
+main: com.denisindenbom.cyberauth.CyberAuth
+
+prefix: CyberAuth
+authors: [DenisIndenbom]
+description: CyberAuth is a plugin for authentication users in your minecraft server
+
+commands:
+  login:
+    usage: /login
+    description: /login <password>
+  register:
+    usage: /register
+    description: /register <password> <password>
+  change_password:
+    usage: /change_password <old_password> <new_password>
+    description: change password
+  logout:
+    usage: /logout
+    description: logout
+  reload:
+    usage: /reload
+    description: reload plugin

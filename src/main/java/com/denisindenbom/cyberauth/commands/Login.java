@@ -62,19 +62,20 @@ public class Login implements CommandExecutor
 
         boolean result = this.plugin.getPasswordAuth().authenticate(password, user.getPasswordHash());
 
-        if (result)
-        {
-            this.plugin.getAuthManager().addUser(user);
-            this.messageSender.sendMessage(sender, this.messages.getString("login.logged_in"));
-            this.messageSender.sendMessage(sender, this.messages.getString("welcome"), "{%user_name%}", user.getName());
-        }
-        else
+        if (!result)
         {
             String wrongPassword = this.messages.getString("error.wrong_password");
 
             this.messageSender.sendMessage(sender, wrongPassword);
             if (this.kick) player.kickPlayer(this.formatText.format(wrongPassword));
         }
+
+        this.plugin.getAuthManager().addUser(user);
+        this.messageSender.sendMessage(sender, this.messages.getString("login.logged_in"));
+        this.messageSender.sendMessage(sender, this.messages.getString("welcome"), "{%user_name%}", user.getName());
+
+        this.plugin.getLogger().info(player.getName() + " logged in");
+
         return true;
     }
 }

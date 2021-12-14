@@ -105,9 +105,7 @@ public class CyberAuth extends JavaPlugin
                 new ChangePassword(this, this.messages, minPasswordLength, maxPasswordLength));
         Objects.requireNonNull(this.getCommand("logout")).setExecutor(
                 new Logout(this, kick, authTime));
-        Objects.requireNonNull(this.getCommand("reload")).setExecutor(new Reload(this));
-
-        //this.getCommand("").setTabCompleter();
+        Objects.requireNonNull(this.getCommand("reload_cyberauth")).setExecutor(new Reload(this));
 
         // create player listener
         this.playerListener = new PlayerListener(this, this.messages, kick, authTime);

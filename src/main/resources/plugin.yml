@@ -19,6 +19,6 @@ commands:
   logout:
     usage: /logout
     description: logout
-  reload:
+  reload_cyberauth:
     usage: /reload
     description: reload plugin

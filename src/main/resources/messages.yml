@@ -1,4 +1,4 @@
-# {%user_name%} - the name of the user who joined
+# {%username%} - the name of the user who joined
 # {%server_name%} - server name
 # {%min_password_length%} - min password length
 # {%min_password_length%} - max password length
@@ -20,7 +20,7 @@
 # <ce> - yellow
 # <cf> - white
 
-welcome: "Welcome, {%user_name%} to the server!"
+welcome: "Welcome, {%username%} to the server!"
 
 login:
   logged_in: "<c2>Successful login!"
@@ -32,6 +32,9 @@ registration:
 
 change_password:
   changed: "<c2>Password changed successfully!"
+
+remove_user:
+  user_removed: "<ce>{%username%}<cf> was <c4>removed<cf>!"
 
 error:
   logged_in: "<c4>You are already logged in!"
@@ -45,5 +48,7 @@ error:
   short_password: "<c4>The password is short! The minimum password length is {%min_password_length%}"
   long_password: "<c4>The password is too long! The maximum password length is {%max_password_length%}"
   registration: "<c4>Error during registration!"
+  user_not_exist: "<c4>The user by name <ce>{%username%}<c4> does not exist."
+  permissions: "<c4>You don't have permissions!"
   timeout: "<c4>Time out!"
 

@@ -1,17 +1,12 @@
 package com.denisindenbom.cyberauth;
 
+import com.denisindenbom.cyberauth.commands.*;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.HandlerList;
-
-import com.denisindenbom.cyberauth.commands.Login;
-import com.denisindenbom.cyberauth.commands.Register;
-import com.denisindenbom.cyberauth.commands.ChangePassword;
-import com.denisindenbom.cyberauth.commands.Logout;
-import com.denisindenbom.cyberauth.commands.Reload;
 
 import com.denisindenbom.cyberauth.listeners.PlayerListener;
 
@@ -41,9 +36,6 @@ public class CyberAuth extends JavaPlugin
     @Override
     public void onLoad()
     {
-        this.saveDefaultConfig();
-        this.saveDefaultMessages();
-
         Logger logger = (org.apache.logging.log4j.core.Logger) LogManager.getRootLogger();
         logger.addFilter(new ConsoleFilter());
     }
@@ -71,6 +63,10 @@ public class CyberAuth extends JavaPlugin
 
     public void loadPlugin()
     {
+        // save default configs
+        this.saveDefaultConfig();
+        this.saveDefaultMessages();
+
         this.loadMessages();
         // load db
         try
@@ -105,7 +101,8 @@ public class CyberAuth extends JavaPlugin
                 new ChangePassword(this, this.messages, minPasswordLength, maxPasswordLength));
         Objects.requireNonNull(this.getCommand("logout")).setExecutor(
                 new Logout(this, kick, authTime));
-        Objects.requireNonNull(this.getCommand("reload_cyberauth")).setExecutor(new Reload(this));
+        Objects.requireNonNull(this.getCommand("reload_cyberauth")).setExecutor(new Reload(this, this.messages));
+        Objects.requireNonNull(this.getCommand("removeuser")).setExecutor(new Remove(this, this.messages));
 
         // create player listener
         this.playerListener = new PlayerListener(this, this.messages, kick, authTime);

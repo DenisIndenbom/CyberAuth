@@ -14,10 +14,13 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.entity.EntityType;
+
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -55,7 +58,7 @@ public class PlayerListener implements Listener
 
         String message;
 
-        if (this.plugin.getAuthDB().userIs(event.getPlayer().getName()))
+        if (this.plugin.getAuthDB().userExists(event.getPlayer().getName()))
             message = this.messages.getString("login.log_in");
         else message = this.messages.getString("registration.register_in");
 
@@ -116,7 +119,7 @@ public class PlayerListener implements Listener
     }
 
     @EventHandler
-    public void onEntityDamage(@NotNull EntityDamageByEntityEvent event)
+    public void onEntityDamageByEntity(@NotNull EntityDamageByEntityEvent event)
     {
         Player damager = null;
         Player injured = null;
@@ -125,6 +128,19 @@ public class PlayerListener implements Listener
         if (event.getEntity().getType().equals(EntityType.PLAYER)) injured = (Player) event.getEntity();
 
         if (!userIsAuth(injured) || !userIsAuth(damager)) event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onEntityDamage(@NotNull EntityDamageEvent event)
+    {
+        if (!event.getEntityType().equals(EntityType.PLAYER)) return;
+        if (userIsAuth((Player) event.getEntity())) return;
+
+        DamageCause cause = event.getCause();
+
+        if (cause.equals(DamageCause.LAVA) || cause.equals(DamageCause.ENTITY_EXPLOSION) ||
+                cause.equals(DamageCause.FIRE) || cause.equals(DamageCause.DROWNING)
+                || cause.equals(DamageCause.STARVATION)) event.setCancelled(true);
     }
 
     public void timerKick(Player player, long delay)
@@ -162,7 +178,7 @@ public class PlayerListener implements Listener
 
                     if (!plugin.getAuthManager().userIs(playerName))
                     {
-                        if (plugin.getAuthDB().userIs(playerName))
+                        if (plugin.getAuthDB().userExists(playerName))
                             messageSender.sendMessage(player, messages.getString("login.log_in"));
                         else messageSender.sendMessage(player, messages.getString("registration.register_in"));
                     }

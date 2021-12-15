@@ -54,6 +54,27 @@ public class CyberAuthDB extends DBManager
         return true;
     }
 
+    public boolean removeUser(@NotNull String name)
+    {
+        if (!this.userExists(name)) return false;
+
+        String sqlRequest = "delete from users where name = ?";
+
+        try
+        {   // add user to db
+            this.executeUpdate(sqlRequest, name);
+            // commit
+            this.commit();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
     public boolean changePasswordHash(String name, String newPasswordHash)
     {
         String sqlRequest = "update users set password_hash = ? where name = ?";
@@ -89,7 +110,7 @@ public class CyberAuthDB extends DBManager
         }
     }
 
-    public boolean userIs(String name)
+    public boolean userExists(String name)
     {
         String sqlRequest = "select * from users where name=?";
         try

@@ -67,7 +67,7 @@ public class Register implements CommandExecutor
         }
 
         // check that the user is not registered yet
-        if (!this.plugin.getAuthDB().userIs(player.getName()))
+        if (!this.plugin.getAuthDB().userExists(player.getName()))
         {
             String passwordHash = this.plugin.getPasswordAuth().hash(password);
             User user = new User(player.getName(), passwordHash);
@@ -75,7 +75,7 @@ public class Register implements CommandExecutor
             // add user
             boolean result = this.plugin.getAuthDB().addUser(user);
 
-            if (result) this.messageSender.sendMessage(sender, this.messages.getString("register.registered"));
+            if (result) this.messageSender.sendMessage(sender, this.messages.getString("registration.registered"));
             else this.messageSender.sendMessage(sender, this.messages.getString("error.registration"));
         }
         else this.messageSender.sendMessage(sender, this.messages.getString("error.registered"));

@@ -19,6 +19,9 @@ commands:
   logout:
     usage: /logout
     description: logout
+  removeuser:
+    usage: /removeUser
+    description: remove user from database
   reload_cyberauth:
     usage: /reload
     description: reload plugin

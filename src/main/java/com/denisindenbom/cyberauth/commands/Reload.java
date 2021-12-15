@@ -1,7 +1,6 @@
 package com.denisindenbom.cyberauth.commands;
 
 import com.denisindenbom.cyberauth.messagesender.MessageSender;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

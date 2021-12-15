@@ -1,7 +1,8 @@
 package com.denisindenbom.cyberauth.messagesender;
 
-import com.denisindenbom.cyberauth.formattext.FormatText;
 import org.bukkit.command.CommandSender;
+
+import com.denisindenbom.cyberauth.formattext.FormatText;
 
 public class MessageSender
 {

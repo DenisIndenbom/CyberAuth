@@ -1,13 +1,15 @@
 package com.denisindenbom.cyberauth.commands;
 
-import com.denisindenbom.cyberauth.messagesender.MessageSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import com.denisindenbom.cyberauth.CyberAuth;
+import com.denisindenbom.cyberauth.messagesender.MessageSender;
+
 import org.jetbrains.annotations.NotNull;
 
 public class Reload implements CommandExecutor
@@ -26,14 +28,29 @@ public class Reload implements CommandExecutor
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args)
     {
-        Player player = (Player) sender;
-        if (!player.isOp())
+        if (!(sender instanceof ConsoleCommandSender))
         {
-            this.messageSender.sendMessage(sender, this.messages.getString("error.permissions"));
-            return true;
+            if (sender instanceof Player)
+            {
+                // check that the player is logged in
+                if (!this.plugin.getAuthManager().userIs(sender.getName()))
+                {
+                    this.messageSender.sendMessage(sender, this.messages.getString("error.not_logged_in"));
+                    return true;
+                }
+
+                if (!sender.isOp())
+                {
+                    this.messageSender.sendMessage(sender, this.messages.getString("error.permissions"));
+                    return true;
+                }
+            }
+            else return true;
         }
 
-        plugin.reloadPlugin();
+        this.plugin.reloadPlugin();
+
+        this.messageSender.sendMessage(sender, "<c5>CyberAuth<cf> is reload!");
 
         return true;
     }

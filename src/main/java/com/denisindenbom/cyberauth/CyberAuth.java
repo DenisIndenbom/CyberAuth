@@ -1,6 +1,5 @@
 package com.denisindenbom.cyberauth;
 
-import com.denisindenbom.cyberauth.commands.*;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,9 +12,9 @@ import com.denisindenbom.cyberauth.listeners.PlayerListener;
 import com.denisindenbom.cyberauth.user.UserAuthManager;
 import com.denisindenbom.cyberauth.database.CyberAuthDB;
 import com.denisindenbom.cyberauth.passwordauth.PasswordAuth;
+import com.denisindenbom.cyberauth.commands.*;
 
 import com.denisindenbom.cyberauth.logfilter.ConsoleFilter;
-
 
 import java.io.File;
 import java.sql.SQLException;
@@ -45,13 +44,13 @@ public class CyberAuth extends JavaPlugin
     {
         try
         {
-            loadPlugin();
-            getLogger().info("Plugin is enable!");
+            this.loadPlugin();
+            this.getLogger().info("Plugin is enable!");
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            getLogger().warning("CyberAuth is not enable! Plugin don't work! Please, check file config.yml!");
+            this.getLogger().warning("CyberAuth is not enable! Plugin don't work! Please, check file config.yml!");
         }
     }
 
@@ -160,7 +159,6 @@ public class CyberAuth extends JavaPlugin
         File messagesFile = new File(getDataFolder(), "messages.yml");
 
         this.messages = new YamlConfiguration();
-
         try
         {
             this.messages.load(messagesFile);

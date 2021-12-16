@@ -38,6 +38,8 @@ public class Register implements CommandExecutor
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label,
                              String @NotNull [] args)
     {
+        if (!(sender instanceof Player)) return true;
+
         Player player = (Player) sender;
         // check for the presence of all arguments
         if (args.length < 2)
@@ -57,28 +59,37 @@ public class Register implements CommandExecutor
         // check password length
         if (password.length <= this.minPasswordLength)
         {
-            this.messageSender.sendMessage(sender, this.messages.getString("error.short_password"), "{%min_password_length%}", ""+this.minPasswordLength);
+            this.messageSender.sendMessage(sender, this.messages.getString("error.short_password"), "{%min_password_length%}", "" + this.minPasswordLength);
             return true;
         }
         if (password.length >= this.maxPasswordLength)
         {
-            this.messageSender.sendMessage(sender, this.messages.getString("error.long_password"), "{%max_password_length%}", ""+this.maxPasswordLength);
+            this.messageSender.sendMessage(sender, this.messages.getString("error.long_password"), "{%max_password_length%}", "" + this.maxPasswordLength);
             return true;
         }
 
         // check that the user is not registered yet
-        if (!this.plugin.getAuthDB().userExists(player.getName()))
+        if (this.plugin.getAuthDB().userExists(player.getName()))
         {
-            String passwordHash = this.plugin.getPasswordAuth().hash(password);
-            User user = new User(player.getName(), passwordHash);
-
-            // add user
-            boolean result = this.plugin.getAuthDB().addUser(user);
-
-            if (result) this.messageSender.sendMessage(sender, this.messages.getString("registration.registered"));
-            else this.messageSender.sendMessage(sender, this.messages.getString("error.registration"));
+            this.messageSender.sendMessage(sender, this.messages.getString("error.registered"));
+            return true;
         }
-        else this.messageSender.sendMessage(sender, this.messages.getString("error.registered"));
+
+        String passwordHash = this.plugin.getPasswordAuth().hash(password);
+        User user = new User(player.getName(), passwordHash);
+
+        // add user
+        boolean result = this.plugin.getAuthDB().addUser(user);
+
+        if (!result)
+        {
+            this.messageSender.sendMessage(sender, this.messages.getString("error.registration"));
+            return true;
+        }
+
+        this.messageSender.sendMessage(sender, this.messages.getString("registration.registered"));
+
+        this.plugin.getLogger().info(player.getName() + " was registered!");
 
         return true;
     }

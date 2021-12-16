@@ -38,6 +38,8 @@ public class Login implements CommandExecutor
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label,
                              String @NotNull [] args)
     {
+        if (!(sender instanceof Player)) return true;
+
         Player player = (Player) sender;
 
         if (args.length == 0)

@@ -1,5 +1,12 @@
 # CyberAuth 
 CyberAuth is a minecraft plugin for player authorization.
+It protects from unauthorized access to the player's account.
+CyberAuth prohibits unauthorized users:
+- putting and interacting with blocks
+- moving around
+- using inventory
+- hitting players
+- writing messages
 
 `For minecraft 1.17.x - 1.18.x`
 

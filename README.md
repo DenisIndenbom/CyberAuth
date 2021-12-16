@@ -49,7 +49,7 @@ auth_time: 400
 kick: true
 ```
 ___
-### Example messages.yml
+### Example messages.yml:
 ```yml
 # {%username%} - the name of the user who joined
 # {%server_name%} - server name

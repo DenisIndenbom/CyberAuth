@@ -8,6 +8,8 @@ CyberAuth prohibits unauthorized users:
 - hitting players
 - writing messages
 
+The plugin also hashes all passwords - this means that no one can find out the user's password.
+
 `For minecraft 1.17.x - 1.18.x`
 
 ---

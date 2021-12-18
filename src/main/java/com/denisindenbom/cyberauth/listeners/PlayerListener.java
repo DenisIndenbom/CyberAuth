@@ -20,14 +20,13 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.entity.EntityType;
 
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.denisindenbom.cyberauth.CyberAuth;
 import com.denisindenbom.cyberauth.formattext.FormatText;
 import com.denisindenbom.cyberauth.messagesender.MessageSender;
 
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -54,6 +53,7 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerJoin(@NotNull PlayerJoinEvent event)
     {
+        // start the timer on the kick
         if (this.kick) this.timerKick(event.getPlayer(), this.authTime);
 
         String message;
@@ -68,53 +68,69 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerQuit(@NotNull PlayerQuitEvent event)
     {
+        // delete player from list of authorized players
         this.plugin.getAuthManager().removeUserByName(event.getPlayer().getName());
     }
 
     @EventHandler
     public void onPlayerInteract(@NotNull PlayerInteractEvent event)
     {
+        // check that player is authorized
         if (!userIsAuth(event.getPlayer())) event.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerChat(@NotNull PlayerChatEvent event)
     {
+        // check that player is authorized
         if (!userIsAuth(event.getPlayer())) event.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerMove(@NotNull PlayerMoveEvent event)
     {
-        if (!userIsAuth(event.getPlayer())) event.setCancelled(true);
+        // check that player is authorized
+        if (userIsAuth(event.getPlayer())) return;
+
+        if(event.getTo() == null) return;
+
+        // check that player move correctly
+        if (event.getFrom().getBlockX() == event.getTo().getBlockX() &&
+           event.getFrom().getBlockZ() == event.getTo().getBlockZ() &&
+           event.getFrom().getBlockY() - event.getTo().getBlockY() >= 0) return;
+
+        // canceled event
+        event.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerItemDamage(@NotNull PlayerItemDamageEvent event)
     {
+        // check that player is authorized
         if (!userIsAuth(event.getPlayer())) event.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerPickupItem(@NotNull EntityPickupItemEvent event)
     {
-        if (event.getEntity().getType().equals(EntityType.PLAYER))
-        {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity().getType().equals(EntityType.PLAYER)) return;
 
-            if (!userIsAuth(player)) event.setCancelled(true);
-        }
+        Player player = (Player) event.getEntity();
+        // check that player is authorized
+        if (!userIsAuth(player)) event.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerPickupArrow(@NotNull PlayerPickupArrowEvent event)
     {
+        // check that player is authorized
         if (!userIsAuth(event.getPlayer())) event.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerDropItem(@NotNull PlayerDropItemEvent event)
     {
+        // check that player is authorized
         if (!userIsAuth(event.getPlayer())) event.setCancelled(true);
     }
 
@@ -122,25 +138,19 @@ public class PlayerListener implements Listener
     public void onEntityDamageByEntity(@NotNull EntityDamageByEntityEvent event)
     {
         Player damager = null;
-        Player injured = null;
 
         if (event.getDamager().getType().equals(EntityType.PLAYER)) damager = (Player) event.getDamager();
-        if (event.getEntity().getType().equals(EntityType.PLAYER)) injured = (Player) event.getEntity();
 
-        if (!userIsAuth(injured) || !userIsAuth(damager)) event.setCancelled(true);
+        // check that the damager is authorized
+        if (!userIsAuth(damager)) event.setCancelled(true);
     }
 
     @EventHandler
     public void onEntityDamage(@NotNull EntityDamageEvent event)
     {
         if (!event.getEntityType().equals(EntityType.PLAYER)) return;
-        if (userIsAuth((Player) event.getEntity())) return;
 
-        DamageCause cause = event.getCause();
-
-        if (cause.equals(DamageCause.LAVA) || cause.equals(DamageCause.ENTITY_EXPLOSION) ||
-                cause.equals(DamageCause.FIRE) || cause.equals(DamageCause.DROWNING)
-                || cause.equals(DamageCause.STARVATION)) event.setCancelled(true);
+        if (!userIsAuth((Player) event.getEntity())) event.setCancelled(true);
     }
 
     public void timerKick(Player player, long delay)

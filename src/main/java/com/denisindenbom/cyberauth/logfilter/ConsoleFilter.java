@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ConsoleFilter extends AbstractFilter
 {
-    private final List<String> hiddenCommands = getCommandsList("/login ", "/register ", "/change_password ");
+    private final List<String> hiddenCommands = getCommandsList("/login ", "/l ", "/log ", "/register ", "/r ", "/reg ", "/change_password ");
 
     public ConsoleFilter()
     {}

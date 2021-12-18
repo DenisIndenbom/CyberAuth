@@ -8,7 +8,7 @@ CyberAuth prohibits unauthorized users:
 - hitting players
 - writing messages
 
-The plugin also hashes all passwords - this means that no one can find out the user's password.
+The plugin also hashes all passwords - this means that no one can find out the user's password. 
 
 `For minecraft 1.17.x - 1.18.x`
 
@@ -24,10 +24,12 @@ The plugin also hashes all passwords - this means that no one can find out the u
 Command **login**:
 - Usage: `/login <password>`
 - Description: This is the login command
+- Aliases: `l`, `log` 
 
 Command **register**:
 - Usage: `/register <password> <new_password>`
 - Description: This is the command to register
+- Aliases: `r`, `reg`
 
 Command **change_password**:
 - Usage: `/change_password <old_password> <new_password>`
@@ -36,6 +38,7 @@ Command **change_password**:
 Command **logout**:
 - Usage: `/logout`
 - Description: This is the command to log out
+- Aliases: `lg`
 
 Command **removeuser**:
 - Usage: `/removeuser <username>`

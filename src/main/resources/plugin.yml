@@ -1,5 +1,5 @@
 name: CyberAuth
-version: 1.0
+version: 1.0.1
 main: com.denisindenbom.cyberauth.CyberAuth
 
 prefix: CyberAuth
@@ -10,15 +10,23 @@ commands:
   login:
     usage: /login
     description: /login <password>
+    aliases:
+      - l
+      - log
   register:
     usage: /register
     description: /register <password> <password>
+    aliases:
+      - reg
+      - r
   change_password:
     usage: /change_password <old_password> <new_password>
     description: change password
   logout:
     usage: /logout
     description: logout
+    aliases:
+      - lg
   removeuser:
     usage: /removeUser
     description: remove user from database

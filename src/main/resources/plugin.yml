@@ -8,13 +8,13 @@ description: CyberAuth is a plugin for authentication users in your minecraft se
 
 commands:
   login:
-    usage: /login
+    usage: /login <password>
     description: /login <password>
     aliases:
       - l
       - log
   register:
-    usage: /register
+    usage: /register <password> <password>
     description: /register <password> <password>
     aliases:
       - reg
@@ -28,7 +28,7 @@ commands:
     aliases:
       - lg
   removeuser:
-    usage: /removeUser
+    usage: /removeUser <username>
     description: remove user from database
   reload_cyberauth:
     usage: /reload

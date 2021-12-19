@@ -26,7 +26,6 @@ import com.denisindenbom.cyberauth.CyberAuth;
 import com.denisindenbom.cyberauth.formattext.FormatText;
 import com.denisindenbom.cyberauth.messagesender.MessageSender;
 
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -113,7 +112,7 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onPlayerPickupItem(@NotNull EntityPickupItemEvent event)
     {
-        if (event.getEntity().getType().equals(EntityType.PLAYER)) return;
+        if (!event.getEntity().getType().equals(EntityType.PLAYER)) return;
 
         Player player = (Player) event.getEntity();
         // check that player is authorized
@@ -137,10 +136,9 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onEntityDamageByEntity(@NotNull EntityDamageByEntityEvent event)
     {
-        Player damager = null;
+        if (!event.getDamager().getType().equals(EntityType.PLAYER)) return;
 
-        if (event.getDamager().getType().equals(EntityType.PLAYER)) damager = (Player) event.getDamager();
-
+        Player damager = (Player) event.getDamager();
         // check that the damager is authorized
         if (!userIsAuth(damager)) event.setCancelled(true);
     }

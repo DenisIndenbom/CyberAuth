@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
@@ -28,6 +29,10 @@ import com.denisindenbom.cyberauth.messagesender.MessageSender;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class PlayerListener implements Listener
 {
@@ -36,6 +41,8 @@ public class PlayerListener implements Listener
 
     private final boolean kick;
     private final long authTime;
+
+    private final List<String> VALID_COMMANDS = this.getCommandsList("/login ", "/l ", "/log ", "/register ", "/r ", "/reg ", "/change_password ");
 
     private final MessageSender messageSender = new MessageSender();
 
@@ -72,14 +79,26 @@ public class PlayerListener implements Listener
     }
 
     @EventHandler
-    public void onPlayerInteract(@NotNull PlayerInteractEvent event)
+    public void onPlayerChat(@NotNull PlayerChatEvent event)
     {
         // check that player is authorized
         if (!userIsAuth(event.getPlayer())) event.setCancelled(true);
     }
 
     @EventHandler
-    public void onPlayerChat(@NotNull PlayerChatEvent event)
+    public void onPlayerCommandPreprocess(@NotNull PlayerCommandPreprocessEvent event)
+    {
+        if (userIsAuth(event.getPlayer())) return;
+
+        for (String validCommand : this.VALID_COMMANDS)
+            if (event.getMessage().contains(validCommand)) return;
+
+        this.messageSender.sendMessage(event.getPlayer(), this.messages.getString("error.not_logged_in"));
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerInteract(@NotNull PlayerInteractEvent event)
     {
         // check that player is authorized
         if (!userIsAuth(event.getPlayer())) event.setCancelled(true);
@@ -134,7 +153,7 @@ public class PlayerListener implements Listener
     }
 
     @EventHandler
-    public void onEntityDamageByEntity(@NotNull EntityDamageByEntityEvent event)
+    public void onEntityDamageByPlayer(@NotNull EntityDamageByEntityEvent event)
     {
         if (!event.getDamager().getType().equals(EntityType.PLAYER)) return;
 
@@ -144,7 +163,7 @@ public class PlayerListener implements Listener
     }
 
     @EventHandler
-    public void onEntityDamage(@NotNull EntityDamageEvent event)
+    public void onPlayerDamage(@NotNull EntityDamageEvent event)
     {
         if (!event.getEntityType().equals(EntityType.PLAYER)) return;
 
@@ -193,5 +212,10 @@ public class PlayerListener implements Listener
                 }
             }
         }.runTaskTimer(this.plugin, 10, 200);
+    }
+
+    private List<String> getCommandsList(String... commands)
+    {
+        return new ArrayList<>(Arrays.stream(commands).toList());
     }
 }

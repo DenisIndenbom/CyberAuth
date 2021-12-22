@@ -21,6 +21,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.entity.EntityType;
 
+import org.bukkit.event.inventory.InventoryClickEvent;
+
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.denisindenbom.cyberauth.CyberAuth;
@@ -126,6 +128,15 @@ public class PlayerListener implements Listener
     {
         // check that player is authorized
         if (!userIsAuth(event.getPlayer())) event.setCancelled(true);
+    }
+
+    @EventHandler
+    void onPlayerUseInventory(@NotNull InventoryClickEvent event)
+    {
+        if (!(event.getWhoClicked() instanceof Player)) return;
+
+        // check that player is authorized
+        if (!userIsAuth((Player) event.getWhoClicked())) event.setCancelled(true);
     }
 
     @EventHandler

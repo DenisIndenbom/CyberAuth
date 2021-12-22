@@ -1,5 +1,5 @@
 name: CyberAuth
-version: 1.0.3
+version: 1.0.4
 main: com.denisindenbom.cyberauth.CyberAuth
 
 prefix: CyberAuth

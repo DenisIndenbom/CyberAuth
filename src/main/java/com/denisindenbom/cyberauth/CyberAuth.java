@@ -70,12 +70,12 @@ public class CyberAuth extends JavaPlugin
         // load db
         try
         {
-            this.authDB = new CyberAuthDB(getDataFolder().getPath() + "/" + "CyberAuth.db");
+            this.authDB = new CyberAuthDB(this.getDataFolder().getPath() + "/" + "CyberAuth.db");
             this.authDB.createDefaultDB();
         }
         catch (SQLException e)
         {
-            getLogger().warning("Failed to load database! Please, check file config.yml or delete CyberAuth.db");
+            this.getLogger().warning("Failed to load database! Please, check file config.yml or delete CyberAuth.db");
             return;
         }
 
@@ -140,7 +140,7 @@ public class CyberAuth extends JavaPlugin
         }
         catch (SQLException e)
         {
-            getLogger().warning("Failed to close database connection!");
+            this.getLogger().warning("Failed to close database connection!");
         }
 
         HandlerList.unregisterAll(this.playerListener);

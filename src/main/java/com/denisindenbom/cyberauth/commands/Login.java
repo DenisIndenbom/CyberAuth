@@ -74,11 +74,16 @@ public class Login implements CommandExecutor
             return true;
         }
 
+        // adding a user to the list of registered
         this.plugin.getAuthManager().addUser(user);
+        // send message
         this.messageSender.sendMessage(sender, this.messages.getString("login.logged_in"));
         this.messageSender.sendMessage(sender, this.messages.getString("welcome"), "{%username%}", user.getName());
-
+        // log the user's login to the console
         this.plugin.getLogger().info(player.getName() + " logged in!");
+
+        // we return the lost air during login
+        player.setRemainingAir(player.getMaximumAir());
 
         return true;
     }

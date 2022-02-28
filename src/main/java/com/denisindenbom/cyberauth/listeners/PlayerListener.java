@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -81,7 +81,7 @@ public class PlayerListener implements Listener
     }
 
     @EventHandler
-    public void onPlayerChat(@NotNull PlayerChatEvent event)
+    public void onPlayerChat(@NotNull AsyncPlayerChatEvent event)
     {
         // check that player is authorized
         if (!userIsAuth(event.getPlayer())) event.setCancelled(true);

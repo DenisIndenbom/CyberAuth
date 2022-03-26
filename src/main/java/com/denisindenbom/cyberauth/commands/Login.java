@@ -52,7 +52,7 @@ public class Login implements CommandExecutor
             this.messageSender.sendMessage(sender, this.messages.getString("error.not_registered"));
             return true;
         }
-        if (this.plugin.getAuthManager().userIs(player.getName()))
+        if (this.plugin.getAuthManager().userExists(player.getName()))
         {
             this.messageSender.sendMessage(sender, this.messages.getString("error.logged_in"));
             return false;
@@ -79,6 +79,7 @@ public class Login implements CommandExecutor
         // send message
         this.messageSender.sendMessage(sender, this.messages.getString("login.logged_in"));
         this.messageSender.sendMessage(sender, this.messages.getString("welcome"), "{%username%}", user.getName());
+
         // log the user's login to the console
         this.plugin.getLogger().info(player.getName() + " logged in!");
 

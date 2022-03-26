@@ -27,14 +27,11 @@ public class UserAuthManager
         }
     }
 
-    public boolean userIs(String name)
+    public boolean userExists(String name)
     {
         for (User user : this.authenticatedUsers)
         {
-            if (user.getName().equals(name))
-            {
-                return true;
-            }
+            if (user.getName().equals(name)) return true;
         }
 
         return false;

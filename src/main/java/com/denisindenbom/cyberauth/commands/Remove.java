@@ -33,7 +33,7 @@ public class Remove implements CommandExecutor
             if (sender instanceof Player)
             {
                 // check that the player is logged in
-                if (!this.plugin.getAuthManager().userIs(sender.getName()))
+                if (!this.plugin.getAuthManager().userExists(sender.getName()))
                 {
                     this.messageSender.sendMessage(sender, this.messages.getString("error.not_logged_in"));
                     return true;

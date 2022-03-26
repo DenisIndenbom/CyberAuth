@@ -39,7 +39,7 @@ public class ChangePassword implements CommandExecutor
         Player player = (Player) sender;
 
         // check that the player is already logged in
-        if (!this.plugin.getAuthManager().userIs(player.getName()))
+        if (!this.plugin.getAuthManager().userExists(player.getName()))
         {
             this.messageSender.sendMessage(sender, this.messages.getString("error.not_logged_in"));
             return false;

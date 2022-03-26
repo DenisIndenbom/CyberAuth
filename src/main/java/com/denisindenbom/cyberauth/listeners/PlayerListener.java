@@ -200,7 +200,7 @@ public class PlayerListener implements Listener
     {
         if (player == null) return true;
 
-        return this.plugin.getAuthManager().userIs(player.getName());
+        return this.plugin.getAuthManager().userExists(player.getName());
     }
 
     private void notification()
@@ -214,7 +214,7 @@ public class PlayerListener implements Listener
                 {
                     String playerName = player.getName();
 
-                    if (!plugin.getAuthManager().userIs(playerName))
+                    if (!plugin.getAuthManager().userExists(playerName))
                     {
                         if (plugin.getAuthDB().userExists(playerName))
                             messageSender.sendMessage(player, messages.getString("login.log_in"));

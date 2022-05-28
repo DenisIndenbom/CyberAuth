@@ -2,7 +2,9 @@
 min_password_length: 3
 max_password_length: 8
 
+account_verification: false
+
 # time to log in (time in ticks)
 auth_time: 400
 # kick the player if you enter the wrong password
-kick: true
+kick_for_wrong_password: true

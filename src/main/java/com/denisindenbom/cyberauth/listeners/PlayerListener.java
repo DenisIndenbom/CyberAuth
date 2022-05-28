@@ -62,7 +62,7 @@ public class PlayerListener implements Listener
     public void onPlayerJoin(@NotNull PlayerJoinEvent event)
     {
         // start the timer on the kick
-        if (this.kick) this.timerKick(event.getPlayer(), this.authTime);
+        if (this.kick) this.kickTimer(event.getPlayer(), this.authTime);
 
         String message;
 
@@ -181,7 +181,7 @@ public class PlayerListener implements Listener
         if (!userIsAuth((Player) event.getEntity())) event.setCancelled(true);
     }
 
-    public void timerKick(Player player, long delay)
+    public void kickTimer(Player player, long delay)
     {
         new BukkitRunnable()
         {

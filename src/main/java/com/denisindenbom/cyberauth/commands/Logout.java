@@ -34,7 +34,7 @@ public class Logout implements CommandExecutor
 
         this.plugin.getAuthManager().removeUserByName(player.getName());
 
-        if (this.kick) this.plugin.getPlayerListener().timerKick(player, this.authTime);
+        if (this.kick) this.plugin.getPlayerListener().kickTimer(player, this.authTime);
 
         return true;
     }

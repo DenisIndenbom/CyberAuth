@@ -50,7 +50,7 @@ public class CyberAuth extends JavaPlugin
         catch (Exception e)
         {
             e.printStackTrace();
-            this.getLogger().warning("CyberAuth is not enable! Plugin don't work! Please, check file config.yml!");
+            this.getLogger().warning("CyberAuth is not running! Plugin don't work! Please, check file config.yml!");
         }
     }
 
@@ -88,12 +88,12 @@ public class CyberAuth extends JavaPlugin
         long minPasswordLength = this.getConfig().getLong("min_password_length");
         long maxPasswordLength = this.getConfig().getLong("max_password_length");
 
-        boolean kick = this.getConfig().getBoolean("kick");
+        boolean kick = this.getConfig().getBoolean("kick_for_wrong_password");
         long authTime = this.getConfig().getLong("auth_time");
 
         // register commands executors
         Objects.requireNonNull(this.getCommand("login")).setExecutor(
-                new Login(this, this.messages, this.getConfig().getBoolean("kick")));
+                new Login(this, this.messages, kick));
         Objects.requireNonNull(this.getCommand("register")).setExecutor(
                 new Register(this, this.messages, minPasswordLength, maxPasswordLength));
         Objects.requireNonNull(this.getCommand("change_password")).setExecutor(

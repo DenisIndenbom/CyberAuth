@@ -27,8 +27,8 @@ commands:
     description: logout
     aliases:
       - lg
-  removeuser:
-    usage: /removeUser <username>
+  remove_user:
+    usage: /remove_user <username>
     description: remove user from database
   reload_cyberauth:
     usage: /reload

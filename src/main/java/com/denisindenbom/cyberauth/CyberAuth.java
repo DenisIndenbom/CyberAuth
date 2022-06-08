@@ -101,7 +101,7 @@ public class CyberAuth extends JavaPlugin
         Objects.requireNonNull(this.getCommand("logout")).setExecutor(
                 new Logout(this, kick, authTime));
         Objects.requireNonNull(this.getCommand("reload_cyberauth")).setExecutor(new Reload(this, this.messages));
-        Objects.requireNonNull(this.getCommand("removeuser")).setExecutor(new Remove(this, this.messages));
+        Objects.requireNonNull(this.getCommand("remove_user")).setExecutor(new Remove(this, this.messages));
 
         // create player listener
         this.playerListener = new PlayerListener(this, this.messages, kick, authTime);

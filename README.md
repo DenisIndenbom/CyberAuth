@@ -19,7 +19,7 @@ The plugin also hashes all passwords - this means that no one can find out the u
 - register
 - change_password
 - logout
-- removeuser
+- remove_user
 - reload_cyberauth
 
 Command **login**:

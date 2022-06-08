@@ -41,7 +41,7 @@ Command **logout**:
 - Description: This is the command to log out
 - Aliases: `lg`
 
-Command **removeuser**:
+Command **remove_user**:
 - Usage: `/removeuser <username>`
 - Description: This command is for deleting a user from the database
 

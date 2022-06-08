@@ -57,12 +57,12 @@ public class Register implements CommandExecutor
         char[] password = args[0].toCharArray();
 
         // check password length
-        if (password.length <= this.minPasswordLength)
+        if (password.length < this.minPasswordLength)
         {
             this.messageSender.sendMessage(sender, this.messages.getString("error.short_password"), "{%min_password_length%}", "" + this.minPasswordLength);
             return true;
         }
-        if (password.length >= this.maxPasswordLength)
+        if (password.length > this.maxPasswordLength)
         {
             this.messageSender.sendMessage(sender, this.messages.getString("error.long_password"), "{%max_password_length%}", "" + this.maxPasswordLength);
             return true;

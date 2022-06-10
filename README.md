@@ -57,9 +57,10 @@ min_password_length: 3
 max_password_length: 8
 
 # time to log in (time in ticks)
-auth_time: 400
+auth_time: 800
+
 # kick the player if you enter the wrong password
-kick: true
+kick_for_wrong_password: true
 ```
 ___
 ### Example messages.yml:

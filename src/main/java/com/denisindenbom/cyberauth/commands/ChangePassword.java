@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import com.denisindenbom.cyberauth.CyberAuth;
-import com.denisindenbom.cyberauth.messagesender.MessageSender;
+import com.denisindenbom.cyberauth.utils.MessageSender;
 import com.denisindenbom.cyberauth.user.User;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,13 +22,14 @@ public class ChangePassword implements CommandExecutor
     private final long minPasswordLength;
     private final long maxPasswordLength;
 
-    public ChangePassword(CyberAuth plugin, FileConfiguration messages, long minPasswordLength, long maxPasswordLength)
+    public ChangePassword(CyberAuth plugin, long minPasswordLength, long maxPasswordLength)
     {
         this.plugin = plugin;
-        this.messages = messages;
 
         this.minPasswordLength = minPasswordLength;
         this.maxPasswordLength = maxPasswordLength;
+
+        this.messages = this.plugin.getMessagesConfig();
     }
 
     @Override
@@ -42,7 +43,7 @@ public class ChangePassword implements CommandExecutor
         if (!this.plugin.getAuthManager().userExists(player.getName()))
         {
             this.messageSender.sendMessage(sender, this.messages.getString("error.not_logged_in"));
-            return false;
+            return true;
         }
         if (args.length < 2)
         {
@@ -56,12 +57,12 @@ public class ChangePassword implements CommandExecutor
         char[] newPassword = args[1].toCharArray();
 
         // check password length
-        if (newPassword.length <= this.minPasswordLength)
+        if (newPassword.length < this.minPasswordLength)
         {
             this.messageSender.sendMessage(sender, this.messages.getString("error.short_password"), "{%min_password_length%}", ""+this.minPasswordLength);
             return true;
         }
-        if (newPassword.length >= this.maxPasswordLength)
+        if (newPassword.length > this.maxPasswordLength)
         {
             this.messageSender.sendMessage(sender, this.messages.getString("error.long_password"), "{%max_password_length%}", ""+this.maxPasswordLength);
             return true;
@@ -84,7 +85,7 @@ public class ChangePassword implements CommandExecutor
 
         if (!changePasswordResult)
             this.messageSender.sendMessage(sender, this.messages.getString("error.change_password"));
-        else this.messageSender.sendMessage(sender, "Password changed successfully!");
+        else this.messageSender.sendMessage(sender, this.messages.getString("change_password.changed"));
 
         return true;
     }

@@ -9,8 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.denisindenbom.cyberauth.CyberAuth;
-import com.denisindenbom.cyberauth.formattext.FormatText;
-import com.denisindenbom.cyberauth.messagesender.MessageSender;
+import com.denisindenbom.cyberauth.utils.FormatText;
+import com.denisindenbom.cyberauth.utils.MessageSender;
 
 import com.denisindenbom.cyberauth.user.User;
 
@@ -19,19 +19,18 @@ import org.jetbrains.annotations.NotNull;
 public class Login implements CommandExecutor
 {
     private final CyberAuth plugin;
+    private final FileConfiguration messages;
+    private final boolean kick;
 
     private final MessageSender messageSender = new MessageSender();
     private final FormatText formatText = new FormatText();
 
-    private final FileConfiguration messages;
-    private final boolean kick;
-
-
-    public Login(CyberAuth plugin, FileConfiguration messages, boolean kick)
+    public Login(CyberAuth plugin, boolean kick)
     {
         this.plugin = plugin;
-        this.messages = messages;
         this.kick = kick;
+
+        this.messages = this.plugin.getMessagesConfig();
     }
 
     @Override
@@ -42,19 +41,19 @@ public class Login implements CommandExecutor
 
         Player player = (Player) sender;
 
-        if (args.length == 0)
+        if (this.plugin.getAuthManager().userExists(player.getName()))
         {
-            this.messageSender.sendMessage(sender, this.messages.getString("error.arguments"));
-            return false;
+            this.messageSender.sendMessage(sender, this.messages.getString("error.logged_in"));
+            return true;
         }
         if (!this.plugin.getAuthDB().userExists(player.getName()))
         {
             this.messageSender.sendMessage(sender, this.messages.getString("error.not_registered"));
             return true;
         }
-        if (this.plugin.getAuthManager().userExists(player.getName()))
+        if (args.length == 0)
         {
-            this.messageSender.sendMessage(sender, this.messages.getString("error.logged_in"));
+            this.messageSender.sendMessage(sender, this.messages.getString("error.arguments"));
             return false;
         }
 

@@ -26,8 +26,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.denisindenbom.cyberauth.CyberAuth;
-import com.denisindenbom.cyberauth.formattext.FormatText;
-import com.denisindenbom.cyberauth.messagesender.MessageSender;
+import com.denisindenbom.cyberauth.utils.FormatText;
+import com.denisindenbom.cyberauth.utils.MessageSender;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -40,20 +40,18 @@ public class PlayerListener implements Listener
 {
     private final CyberAuth plugin;
     private final FileConfiguration messages;
-
-    private final boolean kick;
     private final long authTime;
 
-    private final List<String> VALID_COMMANDS = this.getCommandsList("/login ", "/l ", "/log ", "/register ", "/r ", "/reg ", "/change_password ");
 
+    private final List<String> VALID_COMMANDS = this.getCommandsList("/login ", "/l ", "/log ", "/register ", "/r ", "/reg ", "/change_password ");
     private final MessageSender messageSender = new MessageSender();
 
-    public PlayerListener(CyberAuth plugin, FileConfiguration messages, boolean kick, long authTime)
+    public PlayerListener(CyberAuth plugin, long authTime)
     {
         this.plugin = plugin;
-        this.messages = messages;
-        this.kick = kick;
         this.authTime = authTime;
+
+        this.messages = this.plugin.getMessagesConfig();
 
         this.notification();
     }
@@ -62,7 +60,7 @@ public class PlayerListener implements Listener
     public void onPlayerJoin(@NotNull PlayerJoinEvent event)
     {
         // start the timer on the kick
-        if (this.kick) this.kickTimer(event.getPlayer(), this.authTime);
+        this.kickTimer(event.getPlayer(), this.authTime);
 
         String message;
 
@@ -192,15 +190,9 @@ public class PlayerListener implements Listener
                 String kickMessage = formatText.format(messages.getString("error.timeout"));
 
                 if (!userIsAuth(player)) player.kickPlayer(kickMessage);
+
             }
         }.runTaskLater(this.plugin, delay);
-    }
-
-    private boolean userIsAuth(Player player)
-    {
-        if (player == null) return true;
-
-        return this.plugin.getAuthManager().userExists(player.getName());
     }
 
     private void notification()
@@ -223,6 +215,13 @@ public class PlayerListener implements Listener
                 }
             }
         }.runTaskTimer(this.plugin, 10, 200);
+    }
+
+    private boolean userIsAuth(Player player)
+    {
+        if (player == null) return true;
+
+        return this.plugin.getAuthManager().userExists(player.getName());
     }
 
     private List<String> getCommandsList(String... commands)

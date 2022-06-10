@@ -1,4 +1,4 @@
-package com.denisindenbom.cyberauth.formattext;
+package com.denisindenbom.cyberauth.utils;
 
 import org.bukkit.ChatColor;
 

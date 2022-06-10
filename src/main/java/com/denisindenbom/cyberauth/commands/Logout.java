@@ -13,14 +13,12 @@ public class Logout implements CommandExecutor
 {
     private final CyberAuth plugin;
 
-    private final boolean kick;
     private final long authTime;
 
-    public Logout(CyberAuth plugin, boolean kick, long authTime)
+    public Logout(CyberAuth plugin, long authTime)
     {
         this.plugin = plugin;
 
-        this.kick = kick;
         this.authTime = authTime;
     }
 
@@ -34,7 +32,7 @@ public class Logout implements CommandExecutor
 
         this.plugin.getAuthManager().removeUserByName(player.getName());
 
-        if (this.kick) this.plugin.getPlayerListener().kickTimer(player, this.authTime);
+        this.plugin.getPlayerListener().kickTimer(player, this.authTime);
 
         return true;
     }

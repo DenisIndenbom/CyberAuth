@@ -9,7 +9,7 @@ import org.bukkit.event.HandlerList;
 
 import com.denisindenbom.cyberauth.listeners.PlayerListener;
 
-import com.denisindenbom.cyberauth.user.UserAuthManager;
+import com.denisindenbom.cyberauth.managers.UserAuthManager;
 import com.denisindenbom.cyberauth.database.CyberAuthDB;
 import com.denisindenbom.cyberauth.passwordauth.PasswordAuth;
 import com.denisindenbom.cyberauth.commands.*;
@@ -18,18 +18,16 @@ import com.denisindenbom.cyberauth.logfilter.ConsoleFilter;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.Objects;
 
 import org.apache.logging.log4j.core.Logger;
 
 public class CyberAuth extends JavaPlugin
 {
-    private FileConfiguration messages;
+    private FileConfiguration messagesConfig;
 
     private UserAuthManager authManager;
     private CyberAuthDB authDB;
     private PasswordAuth passwordAuth;
-
     private PlayerListener playerListener;
 
     @Override
@@ -64,9 +62,9 @@ public class CyberAuth extends JavaPlugin
     {
         // save default configs
         this.saveDefaultConfig();
-        this.saveDefaultMessages();
+        this.saveDefaultMessagesConfig();
 
-        this.loadMessages();
+        this.loadMessagesConfig();
         // load db
         try
         {
@@ -92,21 +90,33 @@ public class CyberAuth extends JavaPlugin
         long authTime = this.getConfig().getLong("auth_time");
 
         // register commands executors
-        Objects.requireNonNull(this.getCommand("login")).setExecutor(
-                new Login(this, this.messages, kick));
-        Objects.requireNonNull(this.getCommand("register")).setExecutor(
-                new Register(this, this.messages, minPasswordLength, maxPasswordLength));
-        Objects.requireNonNull(this.getCommand("change_password")).setExecutor(
-                new ChangePassword(this, this.messages, minPasswordLength, maxPasswordLength));
-        Objects.requireNonNull(this.getCommand("logout")).setExecutor(
-                new Logout(this, kick, authTime));
-        Objects.requireNonNull(this.getCommand("reload_cyberauth")).setExecutor(new Reload(this, this.messages));
-        Objects.requireNonNull(this.getCommand("remove_user")).setExecutor(new Remove(this, this.messages));
+        this.getCommand("login").setExecutor(new Login(this, kick));
+        this.getCommand("register").setExecutor(new Register(this, minPasswordLength, maxPasswordLength));
+        this.getCommand("change_password").setExecutor(new ChangePassword(this, minPasswordLength, maxPasswordLength));
+        this.getCommand("logout").setExecutor(new Logout(this, authTime));
+        this.getCommand("reload_cyberauth").setExecutor(new Reload(this));
+        this.getCommand("remove_user").setExecutor(new Remove(this));
 
         // create player listener
-        this.playerListener = new PlayerListener(this, this.messages, kick, authTime);
+        this.playerListener = new PlayerListener(this, authTime);
         // register player listener
         this.getServer().getPluginManager().registerEvents(this.playerListener, this);
+    }
+
+    private void disablePlugin()
+    {
+        try
+        {
+            // disable database
+            this.authDB.disable();
+        }
+        catch (SQLException e)
+        {
+            this.getLogger().warning("Failed to close database connection!");
+        }
+
+        HandlerList.unregisterAll(this.playerListener);
+        this.playerListener = null;
     }
 
     public void reloadPlugin()
@@ -131,41 +141,29 @@ public class CyberAuth extends JavaPlugin
     public PlayerListener getPlayerListener()
     {return this.playerListener;}
 
-    private void disablePlugin()
-    {
-        try
-        {
-            // disable database
-            this.authDB.disable();
-        }
-        catch (SQLException e)
-        {
-            this.getLogger().warning("Failed to close database connection!");
-        }
+    public FileConfiguration getMessagesConfig()
+    {return this.messagesConfig;}
 
-        HandlerList.unregisterAll(this.playerListener);
-        this.playerListener = null;
-    }
-
-    private void saveDefaultMessages()
+    private void saveDefaultMessagesConfig()
     {
         File messagesFile = new File(getDataFolder(), "messages.yml");
 
         if (!messagesFile.exists()) saveResource("messages.yml", false);
     }
 
-    private void loadMessages()
+    private void loadMessagesConfig()
     {
         File messagesFile = new File(getDataFolder(), "messages.yml");
 
-        this.messages = new YamlConfiguration();
+        this.messagesConfig = new YamlConfiguration();
         try
         {
-            this.messages.load(messagesFile);
+            this.messagesConfig.load(messagesFile);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
     }
+
 }

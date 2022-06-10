@@ -1,4 +1,6 @@
-package com.denisindenbom.cyberauth.user;
+package com.denisindenbom.cyberauth.managers;
+
+import com.denisindenbom.cyberauth.user.User;
 
 import java.util.ArrayList;
 import java.util.List;

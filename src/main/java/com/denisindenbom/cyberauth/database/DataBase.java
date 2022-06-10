@@ -2,7 +2,7 @@ package com.denisindenbom.cyberauth.database;
 
 import java.sql.*;
 
-public class DBManager
+public class DataBase
 {
     private Connection conn;
 

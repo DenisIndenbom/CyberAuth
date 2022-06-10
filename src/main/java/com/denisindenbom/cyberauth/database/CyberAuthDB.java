@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import com.denisindenbom.cyberauth.user.User;
 import org.jetbrains.annotations.NotNull;
 
-public class CyberAuthDB extends DBManager
+public class CyberAuthDB extends DataBase
 {
     public CyberAuthDB(String path) throws SQLException
     {
@@ -117,6 +117,7 @@ public class CyberAuthDB extends DBManager
         {
             // make a sql query to get player data from the database
             ResultSet resultSet = this.executeQuery(sqlRequest, name);
+
             return resultSet.next();
         }
         catch (SQLException e)

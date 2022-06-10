@@ -8,7 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import com.denisindenbom.cyberauth.CyberAuth;
-import com.denisindenbom.cyberauth.messagesender.MessageSender;
+import com.denisindenbom.cyberauth.utils.MessageSender;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -19,10 +19,11 @@ public class Remove implements CommandExecutor
 
     private final FileConfiguration messages;
 
-    public Remove(CyberAuth plugin, FileConfiguration messages)
+    public Remove(CyberAuth plugin)
     {
         this.plugin = plugin;
-        this.messages = messages;
+
+        this.messages = this.plugin.getMessagesConfig();
     }
 
     @Override

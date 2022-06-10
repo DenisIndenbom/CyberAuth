@@ -7,7 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import com.denisindenbom.cyberauth.CyberAuth;
-import com.denisindenbom.cyberauth.messagesender.MessageSender;
+import com.denisindenbom.cyberauth.utils.MessageSender;
 import com.denisindenbom.cyberauth.user.User;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,14 +24,14 @@ public class Register implements CommandExecutor
     private final long minPasswordLength;
     private final long maxPasswordLength;
 
-    public Register(CyberAuth plugin, FileConfiguration messages, long minPasswordLength, long maxPasswordLength)
+    public Register(CyberAuth plugin, long minPasswordLength, long maxPasswordLength)
     {
         this.plugin = plugin;
 
-        this.messages = messages;
-
         this.minPasswordLength = minPasswordLength;
         this.maxPasswordLength = maxPasswordLength;
+
+        this.messages = this.plugin.getMessagesConfig();
     }
 
     @Override

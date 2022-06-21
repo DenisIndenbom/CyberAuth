@@ -62,6 +62,7 @@ public class Remove implements CommandExecutor
         }
 
         this.plugin.getAuthManager().removeUserByName(username);
+
         this.messageSender.sendMessage(sender, this.messages.getString("remove_user.user_removed"), "{%username%}", username);
 
         return true;

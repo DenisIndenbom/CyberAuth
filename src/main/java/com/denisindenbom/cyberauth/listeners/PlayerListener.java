@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import org.bukkit.entity.Player;
+
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -16,6 +17,7 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupArrowEvent;
 
+import org.bukkit.event.entity.EntityAirChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
@@ -119,6 +121,17 @@ public class PlayerListener implements Listener
 
         // canceled event
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPlayerWastingAir(EntityAirChangeEvent event)
+    {
+        if (!event.getEntityType().equals(EntityType.PLAYER)) return;
+
+        Player player = (Player) event.getEntity();
+
+        // check that player is authorized
+        if (!userIsAuth(player)) event.setCancelled(true);
     }
 
     @EventHandler

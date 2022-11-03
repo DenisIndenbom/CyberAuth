@@ -82,9 +82,6 @@ public class Login implements CommandExecutor
         // log the user's login to the console
         this.plugin.getLogger().info(player.getName() + " logged in!");
 
-        // we return the lost air during login
-        player.setRemainingAir(player.getMaximumAir());
-
         return true;
     }
 }

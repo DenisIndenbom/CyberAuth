@@ -11,7 +11,7 @@ CyberAuth prohibits unauthorized users:
 
 The plugin also hashes all passwords - this means that no one can find out the user's password. 
 
-`For minecraft 1.17.x - 1.19.x`
+`For minecraft 1.17.x - 1.20.x`
 
 ---
 **Commands:**

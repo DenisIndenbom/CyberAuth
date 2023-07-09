@@ -67,8 +67,10 @@ ___
 ```yml
 # {%username%} - the name of the user who joined
 # {%server_name%} - server name
+
 # {%min_password_length%} - min password length
 # {%min_password_length%} - max password length
+
 # <c > - specifying the color
 # <c0> - black
 # <c1> - dark blue
@@ -86,6 +88,9 @@ ___
 # <cd> - light purple
 # <ce> - yellow
 # <cf> - white
+
+# <# > - specifying the color by hex format
+# Example: <#FFF> - white
 
 welcome: "Welcome, {%username%} to the server!"
 

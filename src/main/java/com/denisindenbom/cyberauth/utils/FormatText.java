@@ -1,31 +1,53 @@
 package com.denisindenbom.cyberauth.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.bukkit.ChatColor;
 
 public class FormatText
 {
+    private final Pattern hexPattern = Pattern.compile("\\<#.*?\\>");
+
     public String format(String text)
     {
         if (text == null) return "";
 
-        String newText = text.replace("<c0>", "" + ChatColor.BLACK).
-                replace("<c1>", "" + ChatColor.DARK_BLUE).
-                replace("<c2>", "" + ChatColor.DARK_GREEN).
-                replace("<c3>", "" + ChatColor.DARK_AQUA).
-                replace("<c4>", "" + ChatColor.DARK_RED).
-                replace("<c5>", "" + ChatColor.DARK_PURPLE).
-                replace("<c6>", "" + ChatColor.GOLD).
-                replace("<c7>", "" + ChatColor.GRAY).
-                replace("<c8>", "" + ChatColor.DARK_GRAY).
-                replace("<c9>", "" + ChatColor.BLUE).
-                replace("<ca>", "" + ChatColor.GREEN).
-                replace("<cb>", "" + ChatColor.AQUA).
-                replace("<cc>", "" + ChatColor.RED).
-                replace("<cd>", "" + ChatColor.LIGHT_PURPLE).
-                replace("<ce>", "" + ChatColor.YELLOW).
-                replace("<cf>", "" + ChatColor.WHITE);
+        // parse color tags
+        text = text.replace("<c0>", String.valueOf(ChatColor.BLACK)).
+                replace("<c1>", String.valueOf(ChatColor.DARK_BLUE)).
+                replace("<c2>", String.valueOf(ChatColor.DARK_GREEN)).
+                replace("<c3>", String.valueOf(ChatColor.DARK_AQUA)).
+                replace("<c4>", String.valueOf(ChatColor.DARK_RED)).
+                replace("<c5>", String.valueOf(ChatColor.DARK_PURPLE)).
+                replace("<c6>", String.valueOf(ChatColor.GOLD)).
+                replace("<c7>", String.valueOf(ChatColor.GRAY)).
+                replace("<c8>", String.valueOf(ChatColor.DARK_GRAY)).
+                replace("<c9>", String.valueOf(ChatColor.BLUE)).
+                replace("<ca>", String.valueOf(ChatColor.GREEN)).
+                replace("<cb>", String.valueOf(ChatColor.AQUA)).
+                replace("<cc>", String.valueOf(ChatColor.RED)).
+                replace("<cd>", String.valueOf(ChatColor.LIGHT_PURPLE)).
+                replace("<ce>", String.valueOf(ChatColor.YELLOW)).
+                replace("<cf>", String.valueOf(ChatColor.WHITE));
 
-        return newText;
+        Matcher matcher = this.hexPattern.matcher(text);
+
+        while (matcher.find())
+        {
+            // handle hex color parsing error
+            try
+            {
+                String subScope = matcher.group();
+                String hex = subScope.replace("<", "").replace(">", "");
+                String replacement = String.valueOf(net.md_5.bungee.api.ChatColor.of(hex));
+
+                text = text.replace(hex, replacement);
+            }
+            catch (Exception ignored) {}
+        }
+
+        return text;
     }
 
     public String format(String text, String target, String replacement)

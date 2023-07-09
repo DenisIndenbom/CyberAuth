@@ -90,7 +90,7 @@ ___
 # <cf> - white
 
 # <# > - specifying the color by hex format
-# Example: <#FFF> - white
+# Example: <#ffffff> - white
 
 welcome: "Welcome, {%username%} to the server!"
 
